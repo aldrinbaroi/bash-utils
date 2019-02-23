@@ -162,12 +162,12 @@ if [ ${promptFor_SSH_PASSWD} = true ]; then getSshPassword; fi
 if [ ${promptFor_SUDO_PASSWD} = true ]; then getSudoPassword; fi
 generateCommand
 if [ ${executeCmd} = true ]; then
-	[ ${verboseMode} = 1 ] && printf "\nExecuting SSH command...\n"
+	[ ${verboseMode} = true ] && printf "\nExecuting SSH command...\n"
 	${SSH_CMD}
 else
 	echo ""
 	echo "Command: ${SSH_CMD}"
 	echo ""
 fi
-[ ${verboseMode} = 1 ] && echo ""
+[ ${verboseMode} = true ] && echo ""
 #::END::
