@@ -1,0 +1,33 @@
+#!/bin/bash
+#
+# Get current JAVA JDK directory
+# 
+# author: Aldrin Edison Baroi
+#
+# license: GPL v3+
+#
+
+# Checks if JDK is installed
+# Works on linux-gnu, solaris*, darwin*
+function __isJDKInstalled()
+{
+	[ $(which javac > /dev/null; echo $?) = 1 ] &&  echo "JDK is not installed" && exit 1
+}
+
+case $OSTYPE in
+	linux-gnu|solaris*)
+		# For Debian, Ubuntu, Redhat, CentOS, Solaris, OpenIndiana
+		__isJDKInstalled
+		dirname $(dirname $(readlink -f $(which javac)))
+		;;
+	darwin*)
+		# For MAX OS X
+		__isJDKInstalled
+		/usr/libexec/java_home
+		;;
+	*)
+		echo "JDK directory detection code not impleted for OS type [$OSTYPE]"
+		exit 1
+		;;
+esac
+#::END::
