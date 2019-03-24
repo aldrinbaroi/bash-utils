@@ -10,6 +10,7 @@
 userId=
 remoteHost=
 cmd=
+cmdAndArgs=
 verboseMode=false
 quietMode=false
 promptFor_SSH_PASSWD=false
@@ -80,21 +81,20 @@ function getSudoPassword
 
 function generateCommand
 {
+	local REDIRECT_OUTPUT="" 
 	SSH_CMD="" 
-	if [ -z ${SSH_PASSWD} ]; then
-		SSH_CMD="ssh ${userId}@${remoteHost}"
-	else
-		SSH_CMD="sshpass -p ${SSH_PASSWD} ssh ${userId}@${remoteHost}"
+	if [ ! -z ${SSH_PASSWD} ]; then
+		SSH_CMD="sshpass -p ${SSH_PASSWD}"
 	fi
+	SSH_CMD+=" ssh ${userId}@${remoteHost}"
 	if [ ${quietMode} = true ]; then
 		SSH_CMD+=" -q"
 		REDIRECT_OUTPUT=" 3> /dev/null 1>&3 2>&1 | logger "
 	fi
-	if [ -z ${SUDO_PASSWD} ]; then
-		SSH_CMD+=" ${cmd} '${args}'"
-	else
-		SSH_CMD+=" echo ${SUDO_PASSWD} | sudo -S ${cmd} '${args}'"
+	if [ ! -z ${SUDO_PASSWD} ]; then
+		SSH_CMD+=" echo ${SUDO_PASSWD} | sudo -S"
 	fi
+	SSH_CMD+=" ${cmdAndArgs}"
 	SSH_CMD+=${REDIRECT_OUTPUT} 
 }
 
@@ -140,7 +140,7 @@ while getopts "vqpsu:h:P:S:Hn"  opt ${@}; do
 			;;
 	esac
 done 
-shift $((OPTIND -1)); cmd=${1}; shift; args="${@}" 
+shift $((OPTIND -1)); cmdAndArgs="${@}" 
 [ ${quietMode} = true ] && verboseMode=false
 
 if [ ${verboseMode} = true ]; then
@@ -152,8 +152,7 @@ if [ ${verboseMode} = true ]; then
 	echo "  SSH Host              : ${remoteHost}"
 	echo "  Prompt for SSH PASSWD : ${promptFor_SSH_PASSWD}"
 	echo "  Prompt for SUDO PASSWD: ${promptFor_SUDO_PASSWD}"
-	echo "  Command               : ${cmd}"
-	echo "  Arguments             : ${args}"
+	echo "  Command & args        : ${cmdAndArgs}"
 	echo ""
 fi
 #
@@ -162,7 +161,7 @@ if [ ${promptFor_SSH_PASSWD} = true ]; then getSshPassword; fi
 if [ ${promptFor_SUDO_PASSWD} = true ]; then getSudoPassword; fi
 generateCommand
 if [ ${executeCmd} = true ]; then
-	[ ${verboseMode} = true ] && printf "\nExecuting SSH command...\n"
+	[ ${verboseMode} = true ] && printf "\nExecuting SSH command: ${SSH_CMD}...\n"
 	${SSH_CMD}
 else
 	echo ""
