@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Get installed Hard Disk Info
+# 
+# author: Aldrin Edison Baroi
+#
+
+dmesg |  awk '/sd[a-z]/ && /GiB/ {print $5" "$10" "$11" "$12}'
+
+#::END::
