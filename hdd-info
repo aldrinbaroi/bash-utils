@@ -5,6 +5,6 @@
 # author: Aldrin Edison Baroi
 #
 
-dmesg |  awk '/sd[a-z]/ && /GiB/ {print $5" "$10" "$11" "$12}'
+dmesg | awk 'BEGIN {x = 0} /sd[a-z]/ && /GiB/ {x++; print "Disk #"x": "$5" "$10" "$11" "$12}'
 
 #::END::
