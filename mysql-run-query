@@ -1,0 +1,10 @@
+#
+# Run a single SQL query against MySQL database from the command line
+# - Uses stored credential 
+#
+
+DATABASE=$1
+QUERY_STR=$2 
+mysql --login-path=local --database=${DATABASE} --execute="${QUERY_STR};"
+
+#::END::
