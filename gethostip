@@ -1,0 +1,15 @@
+#
+# Get host IP address
+#
+case "$OSTYPE" in
+	linux-gnu)
+		ip route get 8.8.8.8  | awk '{print $7}'
+		;;
+	darwin*)
+		ipconfig getifaddr $(route get 8.8.8.8 | awk '/interface: / {print $2; }')
+		;;
+	*)
+		echo "Unsupported OS: $OSTYPE.  Unable to get host IP address"
+		;;
+esac
+#::END::
