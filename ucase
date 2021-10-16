@@ -1,4 +1,4 @@
-IN=${2}
+IN=${1}
 case "$(ps -p $$  | awk 'NR>1 {print $4}' | sed 's/\(.*\)\///')" in
         sh)
                 UC=$(echo $INs | tr '[:lower:]' '[:upper:]')
