@@ -1,10 +1,19 @@
 #
 # Run a single SQL query against MySQL database from the command line
-# - Uses stored credential 
+# - Uses stored credential
 #
 
 DATABASE=$1
-QUERY_STR=$2 
-mysql --login-path=local --database=${DATABASE} --execute="${QUERY_STR};"
+shift
+QUERY_STR=$@
+if [ -z "$DATABASE" ]; then
+        echo "Database name not provided. Aborting..."
+        exit 1
+fi
+if [ -z "$QUERY_STR" ]; then
+        echo "Query SQL not provided. Aborting..."
+        exit 1
+fi
+mysql --login-path=local --database=strapi --execute="${QUERY_STR};"
 
 #::END::
