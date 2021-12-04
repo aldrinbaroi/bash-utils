@@ -1,0 +1,16 @@
+#!/bin/bash
+
+LOWER_DIR=$1
+UPPER_DIR=$2
+WORK_DIR=$3
+OVERLAY_DIR=$4
+
+LABEL="overlayfs"
+[[ -z "$LOWER_DIR" ]] && echo LOWER_DIR must be specified && exit 1
+[[ -z "$UPPER_DIR" ]] && echo UPPER_DIR must be specified && exit 1
+[[ -z "$WORK_DIR" ]] && echo WORK_DIR must be specified && exit 1
+[[ -z "$OVERLAY_DIR" ]] && echo OVERLAY_DIR must be specified && exit 1
+
+sudo mount -t overlay -o lowerdir=${LOWER_DIR},upperdir=${UPPER_DIR},workdir=${WORK_DIR} ${LABEL} ${OVERLAY_DIR}
+
+#::END::
