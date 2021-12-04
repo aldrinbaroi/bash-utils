@@ -1,0 +1,11 @@
+#!/bin/bash
+
+WEBDAV_URL=$1
+MOUNT_POINT=$2
+
+[[ -z "$WEBDAV_URL" ]] && echo WEBDAV_URL must be provided && exit 1
+[[ -z "$MOUNT_POINT" ]] && echo MOUNT_POINT must be provided && exit 1
+
+sudo mount -t davfs -o noexec ${WEBDAV_URL} ${MOUNT_POINT}
+
+#::END::
