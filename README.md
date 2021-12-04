@@ -15,5 +15,10 @@ BASH utility scripts
 
 6) mysql-run-query - Run a single SQL query agains MySQL from command line
                      Uses stored credential 
-              
+                     
+7) mount-unionfs - Mount unionfs 
+
+8) mount-webdav - Mount webdav
+
+9) mount-overlayfs - Mount overlayfs 
 </pre>
