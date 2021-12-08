@@ -14,6 +14,6 @@ if [ -z "$QUERY_STR" ]; then
         echo "Query SQL not provided. Aborting..."
         exit 1
 fi
-mysql --login-path=local --database=strapi --execute="${QUERY_STR};"
+mysql --login-path=local --database=${DATABASE} --execute="${QUERY_STR};"
 
 #::END::
