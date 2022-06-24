@@ -1,0 +1,50 @@
+#!/bin/bash
+# 
+# Remove "snapd" completely
+#
+# NOTE:
+# 1) install Firefox using "install-firefox" script
+#
+
+# Remove all snap packages
+snap list | awk 'NR>1 {print $1}' | xargs -n 1 sudo snap remove 
+
+# Remove snapd service
+sudo systemctl stop snapd
+sudo systemctl disable snapd
+sudo systemctl mask snapd
+
+# Remove snapd.socket service
+sudo systemctl stop snapd
+sudo systemctl disable snapd
+sudo systemctl mask snapd
+
+# Stop any "snap" process running
+sudo pkill snap
+
+# Uninstall snapd 
+sudo apt remove --purge --assume-yes snapd gnome-software-plugin-snap
+
+# Remove snapd files
+sudo rm -f /etc/systemd/system/snapd.service
+sudo rm -f /etc/systemd/system/snapd.socket
+sudo rm -f /run/snapd-snap.socket
+sudo rm -f /run/snapd.socket
+sudo rm -f /run/user/1000/snapd-session-agent.socket
+sudo rm -f /usr/lib/x86_64-linux-gnu/girepository-1.0/Snapd-1.typelib
+sudo rm -f /etc/systemd/system/multi-user.target.wants/snap-core*
+sudo find / -iname "snap-*.png" 2> /dev/null | sudo xargs -n 1 rm -f
+
+# Remove snapd folders
+sudo rm -rf ~/snap/
+sudo rm -rf /var/cache/snapd/ 
+sudo rm -rf /run/snapd
+sudo rm -rf /var/lib/gdm3/snap/snapd-desktop-integration
+sudo rm -rf /root/snap/snapd-desktop-integration
+sudo rm -rf /root/snap
+sudo rm -rf /tmp/snap*
+sudo rm -rf /var/lib/gdm3/snap
+sudo rm -rf /run/udev/tags/snap_*
+sudo rm -rf /sys/fs/bpf/snap
+
+#::END::
