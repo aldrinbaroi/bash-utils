@@ -1,17 +1,13 @@
 IN=${1}
-case "$(ps  -p $$ -o 'command=' | sed 's/[^a-zA-Z]*//')" in
+case "$(ps -p $$  | awk 'NR>1 {print $4}' | sed 's/\(.*\)\///')" in
         sh)
                 LC=$(echo $IN | tr '[:upper:]' '[:lower:]')
                 ;;
         bash)
-		if [[ $(bash -version | awk 'NR==1 {print substr($4,0,1)}') < 4 ]]; then
-                	LC=$(echo $IN | tr '[:upper:]' '[:lower:]')
-		else
-                	LC=${IN^^}
-		fi
+                LC=${IN^^}
                 ;;
         zsh)
-                LC=${IN:l}
+                LC=${IN:u}
                 ;;
 esac
 echo "$LC"
